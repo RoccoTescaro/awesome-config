@@ -2,10 +2,10 @@ local gears = require("gears")
 local awful = require("awful")
 
 local tabs_button_prototype = gears.table.join(
-    awful.button{
-        mod     = {},
-        _button = 1,
-        press   = function(tab)
+    awful.button(
+        {},
+        1,
+        function(tab)
             if tab == client.focus 
             then
                 tab.minimized = true
@@ -17,22 +17,22 @@ local tabs_button_prototype = gears.table.join(
                 )
             end
         end
-    },
+    ),
 
-    awful.button{
-        mod     = {},
-        _button = 4,
-        press   = function()
+    awful.button(
+        {},
+        4,
+        function()
             awful.client.focus.byidx(1)
         end
-    },
+    ),
 
-    awful.button{
-        mod     = {},
-        _button = 5,
-        press   = function()
+    awful.button(
+        {},
+        5,
+        function()
             awful.client.focus.byidx(-1)
         end
-    })
+    ))
 
 return tabs_button_prototype

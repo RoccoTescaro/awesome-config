@@ -4,17 +4,17 @@ local gears = require("gears")
 local awful = require("awful")
 
 bindings.dskmouse = gears.table.join(
-  awful.button {
-    modifier = {},
-    button   = 4,
-    on_press = awful.tag.viewnext
-  },
+  awful.button(
+    {},
+    4,
+    awful.tag.viewnext
+  ),
 
-  awful.button {
-    modifier = {},
-    button   = 4,
-    on_press = awful.tag.viewprev
-  })
+  awful.button(
+    {},
+    4,
+    awful.tag.viewprev
+  ))
 
 local vars = require("vars")
 local hotkeys_popup = require("awful.hotkeys_popup")
@@ -35,28 +35,24 @@ bindings.dskkeys = gears.table.join(
     { description = "refresh", group = "awesome" }
   ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.ctrl },
-    key         = "q",
-    description = "quit",
-    group       = "awesome",
-    on_press    = awesome.quit
-  },
+  awful.key(
+    { vars.modkeys.mod, vars.modkeys.ctrl },
+    "q",
+    awesome.quit,
+    { description = "quit", group = "awesome" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.ctrl },
-    key         = "Tab",
-    description = "next",
-    group       = "desktops",
-    on_press    = awful.tag.viewnext
-  },
+  awful.key(
+    { vars.modkeys.mod, vars.modkeys.ctrl },
+    "Tab",
+    awful.tag.viewnext,
+    { description = "next", group = "desktops" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.ctrl, vars.modkeys.shift },
-    key         = "numrow",
-    description = "move",
-    group       = "desktops",
-    on_press    = function(index)
+  awful.key( -- #TODO check if works
+    { vars.modkeys.mod, vars.modkeys.ctrl, vars.modkeys.shift },
+    "numrow",
+    function(index)
       if client.focus
       then
         local tag = client.focus.screen.tags[index]
@@ -65,101 +61,89 @@ bindings.dskkeys = gears.table.join(
           client.focus:move_to_tag(tag)
         end
       end
-    end
-  },
+    end,
+    { description = "move", group = "desktops" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.ctrl },
-    key         = "numpad",
-    description = "select",
-    group       = "desktops",
-    on_press    = function(index)
+  awful.key( -- #TODO check if works
+    { vars.modkeys.mod, vars.modkeys.ctrl },
+    "numpad",
+    function(index)
       local tag = awful.screen.focused().selected_tag
       if tag
       then
         tag.layout = tag.layouts[index] or tag.layout
       end
-    end
-  },
+    end,
+    { description = "select", group = "desktops" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod },
-    key         = "Tab",
-    description = "next",
-    group       = "tabs",
-    on_press    = function()
-      awful.client.swap.byidx(1)
-    end
-  },
+  awful.key(
+    { vars.modkeys.mod },
+    "Tab",
+    function() awful.client.swap.byidx(1) end,
+    { description = "next", group = "tabs" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod },
-    key         = "Return",     -- Enter
-    description = "terminal",
-    group       = "launcher",
-    on_press    = function()
-      awful.spawn(vars.terminal)
-    end
-  },
+  awful.key(
+    { vars.modkeys.mod },
+    "r",
+    function() awful.screen.focused().searchbar:run() end,
+    { description = "prompt", group = "launcher" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod },
-    key         = "r",
-    description = "prompt",
-    group       = "launcher",
-    on_press    = function()
-      awful.screen.focused().searchbar:run()
-    end
-  })
+  awful.key(
+    { vars.modkeys.mod },
+    "Return", -- Enter
+    function() awful.spawn(vars.terminal) end,
+    { description = "terminal", group = "launcher" }
+  ))
 
 bindings.tabmouse = gears.table.join(
-  awful.button {
-    modifier = {},
-    button   = 1,
-    on_press = function(tab)
+  awful.button(
+    {},
+    1,
+    function(tab)
       tab:emit_signal("request::activate", "mouse_click", { raise = true })
     end
-  },
+  ),
 
-  awful.button {
-    modifier = { vars.modkeys.mod },
-    button   = 1,
-    on_press = function(tab)
+  awful.button(
+    { vars.modkeys.mod },
+    1,
+    function(tab)
       tab:emit_signal("request::activate", "mouse_click", { raise = true })
       awful.mouse.client.move(tab)
     end
-  },
+  ),
 
-  awful.button {
-    modifier = { vars.modkeys.mod },
-    button   = 3,
-    on_press = function(tab)
+  awful.button(
+    { vars.modkeys.mod },
+    3,
+    function(tab)
       tab:emit_signal("request::activate", "mouse_click", { raise = true })
       awful.mouse.client.resize(tab)
     end
-  })
+  ))
 
 bindings.tabkeys = gears.table.join(
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.shift },
-    key         = "f",
-    description = "fullscreen",
-    group       = "tabs",
-    on_press    = function(tab)
+  awful.key(
+    { vars.modkeys.mod, vars.modkeys.shift },
+    "f",
+    function(tab) 
       tab.fullscreen = not tab.fullscreen
       tab:raise()
-    end
-  },
+    end,
+    { description = "fullscreen", group = "tabs" }
+  ),
 
-  awful.key {
-    modifier    = { vars.modkeys.mod, vars.modkeys.shift },
-    key         = "c",
-    description = "close",
-    group       = "tabs",
-    on_press    = function(tab)
+  awful.key(
+    { vars.modkeys.mod, vars.modkeys.shift },
+    "c",
+    function(tab) 
       tab:kill()
-    end
-  })
+    end,
+    { description = "close", group = "tabs" }
+  ))
 
 return bindings
-
