@@ -1,23 +1,25 @@
+-- RUN lua loader
+-- basicly calling the lua compiler with all the default packages ?
 pcall(require, "luarocks.loader")
 
 -- ERROR handling
+-- helps for debugging, show notification of errors for this compiled file
 require("errors")
 
--- THEME setup
-local beautiful = require("beautiful")
-local gears = require("gears")
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua") -- #TODO change with the chosen theme
-
 -- GENERAL setup
+-- setup some global stuff, like theme and general rules that applies to tabs
 require("setup")
 
+-- SCREEN setup
+-- define how the screen is structured, with wallpapers, bars ecc.
 require("screen")
 
 -- BINDINGS
-local bindings = require("bindings")
 -- root bindings applies evreywhere ( I like to think it as bindings relative to desktops/tags )
+local bindings = require("bindings")
 root.buttons(bindings.dskmouse) 
 root.keys(bindings.dskkeys)
 
 -- SIGNALS
+-- still not clear
 require("signals")

@@ -49,7 +49,7 @@ bindings.dskkeys = gears.table.join(
     { description = "next", group = "desktops" }
   ),
 
-  awful.key( -- #TODO check if works
+  awful.key( -- #TODO check if works DOESN'T see original rc.lua
     { vars.modkeys.mod, vars.modkeys.ctrl, vars.modkeys.shift },
     "numrow",
     function(index)

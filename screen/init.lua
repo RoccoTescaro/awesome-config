@@ -44,7 +44,7 @@ awful.screen.connect_for_each_screen( function(s)
         buttons = tabbutton
     }
 
-    s.bar = awful.wibar({ position = "top", screen = s }) -- #TODO change to left
+    s.bar = awful.wibar({ position = "bottom", screen = s }) -- #TODO change to left
     s.bar:setup {
         
         layout = wibox.layout.align.horizontal,
