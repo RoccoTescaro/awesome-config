@@ -24,9 +24,17 @@ local dskbutton = require("screen.dskbutton")
 local tabbutton = require("screen.tabbutton")
 local wibox = require("wibox")
 local vars = require("vars")
+local dpi = require("beautiful.xresources").apply_dpi
 
 awful.screen.connect_for_each_screen( function(s)
     refresh_background(s)
+
+    s.padding = {
+        left = dpi(8),
+        right = dpi(8),
+        top = dpi(8),
+        bottom = dpi(8)
+    }
 
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 

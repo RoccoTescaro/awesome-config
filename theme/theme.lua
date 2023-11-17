@@ -30,7 +30,7 @@ theme.bg_normal = theme.palette.dd_default_c
 theme.bg_focus = theme.palette.d_default_c
 theme.bg_urgent = theme.palette.l_default_c
 
-theme.border_width = 0
+theme.border_width = dpi(2)
 theme.border_normal = theme.bg_normal
 theme.border_focus = theme.bg_focus
 

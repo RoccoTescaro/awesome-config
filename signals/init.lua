@@ -1,8 +1,12 @@
 -- apply rules to tab
 local awful = require("awful")
+local gears = require("gears")
+local dpi = require("beautiful.xresources").apply_dpi
 
 client.connect_signal("manage", 
     function(c)
+        c.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, dpi(12)) end
+
         if awesome.startup and not c.size_hints.user_position and not c.size_hints.program_position 
         then
             awful.placement.no_offscreen(c)

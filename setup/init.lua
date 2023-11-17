@@ -14,29 +14,29 @@ local awful = require("awful")
 require("awful.autofocus")
 
 awful.layout.layouts = {
-    awful.layout.suit.fair, -- #TODO add the others interesting layouts
+    awful.layout.suit.tile, -- #TODO add the others interesting layouts
 }
 
 -- RULES setup
-local beautiful = require("beautiful")
 local bindings = require("bindings")
 
 awful.rules.rules = {
   { 
     rule = { },
     properties = { 
+      placement = awful.placement.no_overlap+awful.placement.no_offscreen,
+      focus = awful.client.focus.filter, -- ? --
+      dockable = true,
+      screen = awful.screen.preferred,
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal,
-      focus = awful.client.focus.filter,
-      raise = true,
+      raise = true, -- ? --
       keys = bindings.tabkeys,
       buttons = bindings.tabmouse,
-      screen = awful.screen.preferred,
-      placement = awful.placement.no_overlap+awful.placement.no_offscreen
     }
   },
 
-  { 
+  --[[{ 
     rule_any = {
 
       instance = {
@@ -84,7 +84,7 @@ awful.rules.rules = {
     
     properties = { titlebars_enabled = true }
     
-  },
+  },--]]
 }
 
 -- since as we said awful is sort of the global structure there is no need to return anything
