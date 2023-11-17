@@ -34,7 +34,7 @@ theme.border_width = dpi(2)
 theme.border_normal = theme.bg_normal
 theme.border_focus = theme.bg_focus
 
-theme.useless_gap = 0
+theme.useless_gap = dpi(2)
 
 theme.taglist_fg_focus = theme.fg_focus
 theme.taglist_bg_focus = theme.bg_focus
