@@ -12,6 +12,7 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
 -- LAYOUT setup
 local awful = require("awful")
 require("awful.autofocus")
+awful.util.spawn("picom") -- allow trasparency
 
 awful.layout.layouts = {
     awful.layout.suit.tile, -- #TODO add the others interesting layouts
@@ -30,6 +31,7 @@ awful.rules.rules = {
       screen = awful.screen.preferred,
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal,
+      opacity = 1,
       raise = true, -- ? --
       keys = bindings.tabkeys,
       buttons = bindings.tabmouse,
