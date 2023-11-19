@@ -39,7 +39,7 @@ naughty.config.presets.normal.margin = dpi(8)
 
 -- critical notifications
 naughty.config.presets.critical.timeout = 5
-naughty.config.presets.critical.hover_timeout = 3
+naughty.config.presets.critical.hover_timeout = 100
 naughty.config.presets.critical.max_width = dpi(544)
 naughty.config.presets.critical.font = "sans 8"
 naughty.config.presets.critical.fg = "#FFFFFF"

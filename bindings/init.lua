@@ -23,7 +23,7 @@ require("awful.hotkeys_popup.keys")
 bindings.dskkeys = gears.table.join(
   awful.key(
     { vars.modkeys.mod, vars.modkeys.ctrl },
-    "h",
+    "s",
     hotkeys_popup.show_help,
     { description = "help", group = "awesome" }
   ),
@@ -43,13 +43,68 @@ bindings.dskkeys = gears.table.join(
   ),
 
   awful.key(
-    { vars.modkeys.mod, vars.modkeys.ctrl },
+    { vars.modkeys.mod },
     "Tab",
     awful.tag.viewnext,
     { description = "next", group = "desktops" }
   ),
 
-  awful.key( -- #TODO check if works DOESN'T see original rc.lua
+  awful.key(
+    { vars.modkeys.alt },
+    "Tab",
+    awful.tag.viewnext,
+    { description = "next", group = "desktops" }
+  ),
+
+  awful.key( --#TODO adjust
+    { vars.modkeys.mod },
+    "x",
+    awful.tag.viewnext,
+    { description = "next", group = "desktops" }
+  ),
+
+  awful.key( --#TODO adjust
+    { vars.modkeys.mod },
+    "z",
+    awful.tag.viewprev,
+    { description = "prev", group = "desktops" }
+  ),
+
+  awful.key( --#TODO fix
+  { vars.modkeys.mod, vars.modkeys.shift },
+  "x",
+  function ()
+    if client.focus 
+    then
+      local tag_index = awful.tag.getidx(client.focus:tags()[1]) + 1
+      if awful.tag[tag_index] 
+      then
+        client.focus:move_to_tag(tag_index)
+        awful.tag.viewidx(1)
+      end
+    end
+  end,
+  { description = "move to next", group = "tab" }
+  ),
+
+awful.key( --#TODO fix
+  { vars.modkeys.mod, vars.modkeys.shift },
+  "z",
+  function ()
+    if client.focus 
+    then
+      local tag_index = awful.tag.getidx(client.focus:tags()[1]) - 1
+      if awful.tag[tag_index] 
+      then
+        client.focus:move_to_tag(tag_index)
+        awful.tag.viewidx(-1)
+      end
+    end
+  end,
+  { description = "move to prev", group = "tab" }
+  ),
+
+  --[[awful.key( -- #TODO check if works DOESN'T see original rc.lua
     { vars.modkeys.mod, vars.modkeys.ctrl, vars.modkeys.shift },
     "numrow",
     function(index)
@@ -76,14 +131,7 @@ bindings.dskkeys = gears.table.join(
       end
     end,
     { description = "select", group = "desktops" }
-  ),
-
-  awful.key(
-    { vars.modkeys.mod },
-    "Tab",
-    function() awful.client.swap.byidx(1) end,
-    { description = "next", group = "tabs" }
-  ),
+  ),--]]
 
   awful.key(
     { vars.modkeys.mod },
@@ -118,10 +166,17 @@ bindings.tabmouse = gears.table.join(
   ),
 
   awful.button(
+    { vars.modkeys.mod, vars.modkeys.shift },
+    1,
+    function(tab)
+      tab:kill()
+    end
+  ),
+
+  awful.button(
     { vars.modkeys.mod },
     3,
     function(tab)
-      tab:emit_signal("request::activate", "mouse_click", { raise = true })
       awful.mouse.client.resize(tab)
     end
   ))

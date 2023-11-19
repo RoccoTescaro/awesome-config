@@ -3,8 +3,8 @@
 
 local beautiful = require("beautiful")
 local gears = require("gears")
-local dpi = require("beautiful.xresources").apply_dpi
-local bar_height = dpi(32)
+local dpi = require("beautiful.xresources").apply_dpi   
+local bar_height = dpi(56) -- (has a bottom margin included) 
 
 local function refresh_background(screen)
     if beautiful.wallpaper then
@@ -81,46 +81,80 @@ awful.screen.connect_for_each_screen( function(s)
         screen = s,
         bg = beautiful.bg_normal .. "00",
         ontop = true,
-        height = bar_height
+        height = bar_height,
+        visible = false,
         })
+
 
     s.bar:setup {
         
         layout = wibox.layout.align.horizontal,
-        --spacing = dpi(12),
-        
-        { -- left widgets
-            --layout = wibox.layout.fixed.horizontal, 
-            bg = beautiful.palette.dd_default_c,
-            widget = wibox.container.background,
-            shape = gears.shape.rounded_rect,
-            forced_width = dpi(160),
+
+        nil,
+        {
+            widget = wibox.container.margin,
+            left = dpi(14),
+            bottom = dpi(14),
+            right = dpi(14),
 
             {
-                layout = wibox.layout.fixed.horizontal, 
+                layout = wibox.layout.align.horizontal,
 
-                vars.kbmap,
-                wibox.widget.systray(),
-                s.searchbar, -- #TODO make its own bar
+                { -- left widgets
+                    --layout = wibox.layout.fixed.horizontal, 
+                    bg = beautiful.palette.d_default_c,
+                    widget = wibox.container.background,
+                    shape = gears.shape.rounded_bar,
+                    shape_border_width = beautiful.border_width,
+                    shape_border_color = beautiful.palette.dd_default_c,
+                    forced_width = dpi(160),
+                    opacity = 0.8,
+        
+                    {
+                        layout = wibox.layout.fixed.horizontal, 
+        
+                        vars.kbmap,
+                        wibox.widget.systray(),
+                        s.searchbar, -- #TODO make its own bar
+                    }
+                },
+                
+                s.dsklist,
+                --s.tablist, -- Middle widget
+        
+                { -- right widgets
+                    --layout = wibox.layout.fixed.horizontal,
+                    bg = beautiful.palette.d_default_c,
+                    widget = wibox.container.background,
+                    shape = gears.shape.rounded_bar,
+                    shape_border_width = beautiful.border_width,
+                    shape_border_color = beautiful.palette.dd_default_c,
+                    forced_width = dpi(160),
+                    opacity = 0.8,
+        
+                    vars.clock,
+                },
             }
         },
-        
-        s.dsklist,
-        --s.tablist, -- Middle widget
-
-        { -- right widgets
-            --layout = wibox.layout.fixed.horizontal,
-            bg = beautiful.palette.dd_default_c,
-            widget = wibox.container.background,
-            shape = gears.shape.rounded_rect,
-            forced_width = dpi(160),
-
-            vars.clock,
-        },
+        nil
 
     }
-    
+    s.bar_trigger =  wibox({ bg = "#00000000", opacity = 0, ontop = true, visible = true })
+    s.bar_timer = gears.timer({ timeout = 2})
+
+    s.bar_trigger:geometry({ y = s.workarea.height-dpi(6), height = dpi(6), width = s.workarea.width })
+    s.bar_timer:connect_signal("timeout", function() s.bar.visible = false; s.bar_timer:stop() end )
+    s.bar_trigger:connect_signal("mouse::enter", function() s.bar.visible = true end)
+    s.bar:connect_signal("mouse::enter", function() if s.bar_timer.started then s.bar_timer:stop() end end)
+    s.bar:connect_signal("mouse::leave", function() s.bar_timer:again() end)
+
     -- remove the strut of the bar, it seems the only way the workare gets under it
     s.bar:struts{ left = 0, right = 0, bottom = 0, top = 0 }
-end)
 
+    s.workarea = {
+        x = s.geometry.x,
+        y = s.geometry.y,
+        width = s.geometry.width,
+        height = s.geometry.height
+    }
+end)

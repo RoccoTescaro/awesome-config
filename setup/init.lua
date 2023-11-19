@@ -32,61 +32,13 @@ awful.rules.rules = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal,
       opacity = 1,
-      raise = true, -- ? --
+      --raise = true, -- ? --
       keys = bindings.tabkeys,
       buttons = bindings.tabmouse,
+      maximized = false, -- important for firefox
+      floating = false 
     }
   },
-
-  --[[{ 
-    rule_any = {
-
-      instance = {
-        "DTA",  -- Firefox addon DownThemAll.
-        "copyq",  -- Includes session name in class.
-        "pinentry",
-      },
-      
-      class = {
-        "Arandr",
-        "Blueman-manager",
-        "Gpick",
-        "Kruler",
-        "MessageWin",  -- kalarm.
-        "Sxiv",
-        "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-        "Wpa_gui",
-        "veromix",
-        "xtightvncviewer"
-      },
-
-      name = {
-        "Event Tester",  -- xev.
-      },
-
-      role = {
-        "AlarmWindow",  -- Thunderbird's calendar.
-        "ConfigManager",  -- Thunderbird's about:config.
-        "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
-      }
-    
-    }, 
-    
-    properties = { floating = true }
-  
-  },
-
-  { 
-    rule_any = {
-      type = { 
-        "normal", 
-        "dialog" 
-      }
-    },
-    
-    properties = { titlebars_enabled = true }
-    
-  },--]]
 }
 
 -- since as we said awful is sort of the global structure there is no need to return anything

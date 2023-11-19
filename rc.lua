@@ -23,3 +23,5 @@ root.keys(bindings.dskkeys)
 -- SIGNALS
 -- still not clear
 require("signals")
+
+--github token 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
