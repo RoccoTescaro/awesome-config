@@ -30,7 +30,7 @@ local function on_geometry_change(screen)
 end
 
 -- call the refresh background function if the screen
--- geometry changes (eg. when you turn the screen 1920x960 -> 960x1920)
+-- geometry changes (eg. when you turn the screen 1920 x 960 -> 960 x 1920)
 screen.connect_signal("property::geometry", on_geometry_change)
 
 local awful = require("awful")
@@ -39,6 +39,8 @@ local tabbutton = require("screen.tabbutton")
 local wibox = require("wibox")
 local vars = require("vars")
 
+
+-- tested for one screen only
 awful.screen.connect_for_each_screen( function(s)
     on_geometry_change(s)
 
@@ -48,41 +50,28 @@ awful.screen.connect_for_each_screen( function(s)
         top = dpi(3),
         bottom = dpi(3)
     }
-
-    awful.tag({ "1", "2", "3" }, s, awful.layout.layouts[1])
+    
+    awful.tag({ "", "", "", "", "" }, s, awful.layout.layouts[1]) --#TODO make dinamic
 
     s.searchbar = awful.widget.prompt()
     
-    s.dsklist = awful.widget.taglist {
-        screen  = s,
-        filter  = awful.widget.taglist.filter.all,
-        style = {
-            shape = gears.shape.rounded_rect,--function(cr, width, height) gears.shape.rounded_bar(cr, dpi(96), dpi(4)) end
-        },
-        layout = {
-            spacing = dpi(12),
-            layout = wibox.layout.fixed.horizontal
-        },
-        buttons = dskbutton,
-        --style.spacing = dpi(16)
-        --layout = wibox.layout.align.horizontal
-    }
+    local dsks = require("bar")
 
-    --[[
-    s.tablist = awful.widget.tasklist {
-        screen  = s,
-        filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tabbutton
-    }
-    --]]
+    s.dsklist = dsks.new(
+    {
+        screen = s,
+        taglist = { buttons = dskbutton },
+        tasklist = { buttons = tabbutton }
+    })
 
     s.bar = awful.wibar({
         position = "bottom",
         screen = s,
-        bg = beautiful.bg_normal .. "00",
+        bg = "#ffffff00",
         ontop = true,
         height = bar_height,
         visible = false,
+        --input_passthrough = true,
         })
 
 
@@ -93,44 +82,107 @@ awful.screen.connect_for_each_screen( function(s)
         nil,
         {
             widget = wibox.container.margin,
-            left = dpi(14),
-            bottom = dpi(14),
-            right = dpi(14),
+            left = dpi(16),
+            bottom = dpi(16),
+            right = dpi(16),
 
             {
                 layout = wibox.layout.align.horizontal,
 
                 { -- left widgets
                     --layout = wibox.layout.fixed.horizontal, 
-                    bg = beautiful.palette.d_default_c,
+                    bg = beautiful.bg_normal,
                     widget = wibox.container.background,
                     shape = gears.shape.rounded_bar,
-                    shape_border_width = beautiful.border_width,
-                    shape_border_color = beautiful.palette.dd_default_c,
-                    forced_width = dpi(160),
-                    opacity = 0.8,
-        
+                    shape_border_width = dpi(1),
+                    shape_border_color = beautiful.border_focus,
+                    --opacity = 0.96,
                     {
-                        layout = wibox.layout.fixed.horizontal, 
-        
-                        vars.kbmap,
-                        wibox.widget.systray(),
-                        s.searchbar, -- #TODO make its own bar
+                        widget = wibox.container.constraint,
+                        strategy = 'exact',
+                        width = dpi(160),
+                        {
+                            left = dpi(3),
+                            right = dpi(3),
+                            top = dpi(6),
+                            bottom = dpi(6),
+                            widget = wibox.container.margin, 
+                            {
+                                layout = wibox.layout.align.horizontal, 
+                                
+                                {
+                                    widget = wibox.container.margin,
+                                    left = dpi(3),
+                                    right = dpi(3),
+                                    {
+                                        widget = wibox.container.background,
+                                        bg =  beautiful.bg_systray,
+                                        shape = gears.shape.rounded_bar,
+                                        vars.kbmap,
+                                    }
+                                },
+                                {
+                                    widget = wibox.container.margin,
+                                    left = dpi(3),
+                                    right = dpi(3),
+                                    {
+                                        widget = wibox.container.constraint,
+                                        strategy = 'max',
+                                        width = dpi(104),
+                                        {
+                                            widget = wibox.container.background,
+                                            bg =  beautiful.bg_systray,
+                                            shape = gears.shape.rounded_bar,
+                                            {
+                                                widget = wibox.container.place,
+                                                wibox.widget.systray(),
+                                            }
+                                        }
+                                    }
+                                },                                            
+                                {
+                                    widget = wibox.container.margin,
+                                    left = dpi(3),
+                                    right = dpi(3),
+                                    {
+                                        
+                                        widget = wibox.container.background,
+                                        bg =  beautiful.bg_systray,
+                                        shape = gears.shape.rounded_bar,
+                                        s.searchbar, -- #TODO make its own bar
+                                    }
+                                }
+                            }   
+                        }
                     }
                 },
-                
-                s.dsklist,
-                --s.tablist, -- Middle widget
-        
+                {
+                    widget = wibox.container.place,
+                    {
+                        bg = beautiful.bg_normal,
+                        widget = wibox.container.background,
+                        shape = gears.shape.rounded_bar,
+                        shape_border_width = dpi(1),
+                        shape_border_color = beautiful.border_focus,
+                        {
+                            left = dpi(3),
+                            right = dpi(3),
+                            top = dpi(6),
+                            bottom = dpi(6),
+                            widget = wibox.container.margin,
+                            s.dsklist,
+                        }
+                    }
+                },
                 { -- right widgets
                     --layout = wibox.layout.fixed.horizontal,
-                    bg = beautiful.palette.d_default_c,
+                    bg = beautiful.bg_normal,
                     widget = wibox.container.background,
                     shape = gears.shape.rounded_bar,
-                    shape_border_width = beautiful.border_width,
-                    shape_border_color = beautiful.palette.dd_default_c,
+                    shape_border_width = dpi(1),
+                    shape_border_color = beautiful.border_focus,
                     forced_width = dpi(160),
-                    opacity = 0.8,
+                    opacity = 0.96,
         
                     vars.clock,
                 },
@@ -142,19 +194,15 @@ awful.screen.connect_for_each_screen( function(s)
     s.bar_trigger =  wibox({ bg = "#00000000", opacity = 0, ontop = true, visible = true })
     s.bar_timer = gears.timer({ timeout = 2})
 
-    s.bar_trigger:geometry({ y = s.workarea.height-dpi(6), height = dpi(6), width = s.workarea.width })
+    s.bar_trigger:geometry({ y = s.workarea.height-dpi(8), height = dpi(8), width = s.workarea.width })
     s.bar_timer:connect_signal("timeout", function() s.bar.visible = false; s.bar_timer:stop() end )
-    s.bar_trigger:connect_signal("mouse::enter", function() s.bar.visible = true end)
+    s.bar_trigger:connect_signal("mouse::enter", 
+    function() 
+        s.bar.visible = true
+        -- remove the strut of the bar, it seems the only way the workarea gets under it
+        s.bar:struts{ left = 0, right = 0, bottom = 0, top = 0 } 
+    end)
     s.bar:connect_signal("mouse::enter", function() if s.bar_timer.started then s.bar_timer:stop() end end)
     s.bar:connect_signal("mouse::leave", function() s.bar_timer:again() end)
-
-    -- remove the strut of the bar, it seems the only way the workare gets under it
-    s.bar:struts{ left = 0, right = 0, bottom = 0, top = 0 }
-
-    s.workarea = {
-        x = s.geometry.x,
-        y = s.geometry.y,
-        width = s.geometry.width,
-        height = s.geometry.height
-    }
+    --]]
 end)

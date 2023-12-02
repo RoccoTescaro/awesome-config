@@ -12,7 +12,8 @@ beautiful.init(gears.filesystem.get_configuration_dir() .. "theme/theme.lua")
 -- LAYOUT setup
 local awful = require("awful")
 require("awful.autofocus")
-awful.util.spawn("picom") -- allow trasparency
+--#TODO remove complete path before push (should have done before commit)
+awful.spawn("picom -b --config /home/roccotescaro/.config/picom/picom.conf")
 
 awful.layout.layouts = {
     awful.layout.suit.tile, -- #TODO add the others interesting layouts
@@ -36,7 +37,15 @@ awful.rules.rules = {
       keys = bindings.tabkeys,
       buttons = bindings.tabmouse,
       maximized = false, -- important for firefox
-      floating = false 
+      floating = false
+    }
+  },
+
+  { -- doesn't seems to hereditary them
+    rule = { class = "firefox-developer-edition" },
+    properties = {
+      border_width = beautiful.border_width,
+      border_color = beautiful.border_normal,
     }
   },
 }

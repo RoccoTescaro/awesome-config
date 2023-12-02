@@ -12,6 +12,7 @@ client.connect_signal("manage",
             awful.placement.no_offscreen(c)
         end
     end)
+    
 
 local gears = require("gears")
 local wibox = require("wibox")

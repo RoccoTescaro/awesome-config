@@ -2,9 +2,10 @@ local bindings = {}
 
 local gears = require("gears")
 local awful = require("awful")
+local dpi = require("beautiful.xresources").apply_dpi
 
-bindings.dskmouse = gears.table.join(
-  awful.button(
+bindings.dskmouse = gears.table.join( -- already binded in taglist #TODO remove
+  --[[awful.button(
     {},
     4,
     awful.tag.viewnext
@@ -14,11 +15,12 @@ bindings.dskmouse = gears.table.join(
     {},
     4,
     awful.tag.viewprev
-  ))
+  )--]])
 
 local vars = require("vars")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("awful.hotkeys_popup.keys")
+
 
 bindings.dskkeys = gears.table.join(
   awful.key(
@@ -186,7 +188,15 @@ bindings.tabkeys = gears.table.join(
     { vars.modkeys.mod, vars.modkeys.shift },
     "f",
     function(tab) 
+      if tab.fullscreen --#TODO check if do-able with signals
+      then
+        tab.shape = function(cr, w, h) gears.shape.rounded_rect(cr, w, h, dpi(12)) end
+      else 
+        tab.shape = gears.shape.rectangle
+      end
+
       tab.fullscreen = not tab.fullscreen
+      
       tab:raise()
     end,
     { description = "fullscreen", group = "tabs" }

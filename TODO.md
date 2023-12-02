@@ -1,0 +1,40 @@
+- [ ] general refactor 
+    - [ ] bindings
+        - change names to buttons
+        - [ ] kmaps
+            - [ ] move clients (even holding it)
+            - [ ] add tags ?
+    - [ ] clients
+        - [ ] make its own module with rules and signals
+    - [ ] screens 
+        - [ ] remove bar and widgets
+        - [ ] adapt wallpaper to geometry
+    - [ ] widgets
+        - [ ] divide in modules
+        - [ ] bottom bar
+            - [x] icons opacity and dimension on focus
+            - [x] icons position
+            - [ ] width based on task needed
+            - [ ] input mask for bar or global mouse position
+            - [ ] volume widget
+            - [ ] clock widget
+            - [ ] quit button
+            - [ ] help button
+            - [ ] charge widget
+            - [ ] luminosity widget
+            - [ ] connection widget
+        - [ ] search bar
+        - [ ] help popup
+    - [x] errors
+        - [x] divide in modules
+        - [x] debug functions
+        - [x] fix log external modules
+    - [ ] signals
+        - [ ] delete and put where needed
+        - [ ] property maximize to fix borders shape
+        - [ ] bar property
+- [ ] theme refactor
+
+- [ ] documentation
+
+- [ ] remove TODO

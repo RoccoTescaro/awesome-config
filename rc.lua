@@ -4,7 +4,7 @@ pcall(require, "luarocks.loader")
 
 -- ERROR handling
 -- helps for debugging, show notification of errors for this compiled file
-require("errors")
+require("debug")
 
 -- GENERAL setup
 -- setup some global stuff, like theme and general rules that applies to tabs
@@ -24,4 +24,8 @@ root.keys(bindings.dskkeys)
 -- still not clear
 require("signals")
 
---github token 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
+--github token 
+
+-- xrand --help
+-- xrand --listmonitors
+-- xrand --output eDP (monitor) --brightness 0.5 (value)

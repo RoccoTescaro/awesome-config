@@ -17,6 +17,6 @@ local awful = require("awful")
 vars.kbmap = awful.widget.keyboardlayout()
 
 local wibox = require("wibox")
-vars.clock = wibox.widget.textclock()
+vars.clock = wibox.widget.textclock("%d/%m/%Y %k:%M")
 
 return vars
